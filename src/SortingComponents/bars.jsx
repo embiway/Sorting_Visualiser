@@ -214,14 +214,14 @@ class Bars extends Component {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">
-                  Separated link
+                  Quick Sort
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#deets">More deets</Nav.Link>
+              <Nav.Link href="#deets">Instructions</Nav.Link>
               <Nav.Link eventKey={2} href="#memes">
-                Dank memes
+                Remarks
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
