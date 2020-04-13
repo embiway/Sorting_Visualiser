@@ -74,8 +74,6 @@ class Bars extends Component {
           let height_bar2 = arrayBars[indexBar2].style.height;
 
           if (height_bar1 - height_bar2 > 0) {
-            console.log("heiht1 = " + height_bar1);
-            console.log("heiht2 = " + height_bar2);
             arrayBars[
               indexBar1
             ].style.backgroundColor = INCORRECT_PLACE_COMPARISION_BAR_COLOR;
