@@ -1,16 +1,18 @@
 import React, { Component } from "react";
-import BubbleSort from ".././Algorithms/BubbleSort.js";
-import InsertionSort from ".././Algorithms/InsertionSort.js";
-import MergeSort from ".././Algorithms/MergeSort.js";
-import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import Slider from "./Slider.js"
-import "./bars.css";
+import BubbleSort from "../Algorithms/BubbleSort.js";
+import InsertionSort from "../Algorithms/InsertionSort.js";
+import MergeSort from "../Algorithms/MergeSort.js";
+import NavBar from "./NavBar.jsx";
+import Slider from "./Slider.jsx"
+import "./Board.css"
+import SelectionSort from "../Algorithms/SelectionSort.js";
+import InstructionsModal from './InstructionsModal'
 
 const ANIMATION_SPEED = 2;
 const DEFAULT_BAR_COLOR = "pink";
+const ALTER_BAR_COLOR = "blue";
 const CORRECT_PLACE_COMPARISION_BAR_COLOR = "green";
 const INCORRECT_PLACE_COMPARISION_BAR_COLOR = "red";
-let SIZE = 100;
 let WIDTH = 980;
 let MAX_HEIGHT = 500;
 let BAR_WIDTH = 7;
@@ -19,20 +21,60 @@ class Bars extends Component {
   constructor() {
     super();
     this.state = {
-      array: []
+      array: [],
+      barColor: DEFAULT_BAR_COLOR,
+      size: 0,
+      modalActive: false
     };
+
+    this.changeBarColor = this.changeBarColor.bind(this)
+    this.resetArray = this.resetArray.bind(this)
+    this.mergeSort = this.mergeSort.bind(this)
+    this.insertionSort = this.insertionSort.bind(this)
+    this.bubbleSort = this.bubbleSort.bind(this)
+    this.selectionSort = this.selectionSort.bind(this)
+    this.showModal = this.showModal.bind(this)
   }
+
 
   componentDidMount() {
-    this.resetArray();
+    this.resetArray(0);
   }
 
-  resetArray() {
-    SIZE = Slider.fun();
-    BAR_WIDTH = WIDTH / SIZE - 1;
+  // method to set showModal to true so that it can be shown when We click on Instructions on the NavBar.
+  showModal() {
+    this.setState({modalActive: true})
+  }
+
+  // used to toggle between the bar color pink and blue.
+  changeBarColor() {
+    console.log("Function")
+    if (this.state.barColor === DEFAULT_BAR_COLOR) {
+      this.setState({barColor : ALTER_BAR_COLOR})
+      const arrayBars = document.getElementsByClassName(
+        "array-bar"
+      );
+      for (let i = 0; i < arrayBars.length; i++)
+        arrayBars[i].style.backgroundColor = ALTER_BAR_COLOR;
+    }
+    else {
+      this.setState({barColor : DEFAULT_BAR_COLOR})
+      const arrayBars = document.getElementsByClassName(
+        "array-bar"
+      );
+      for (let i = 0; i < arrayBars.length; i++)
+        arrayBars[i].style.backgroundColor = DEFAULT_BAR_COLOR;
+    }
+  }
+
+  // Called everytime the generate array is called or when we use the slider.
+  resetArray(array_size) {
+    if (array_size !== -1)
+      this.setState({size : array_size})
+    BAR_WIDTH = WIDTH / this.state.size - 1;
     const bars = [];
     let max_height = 0;
-    for (let i = 0; i < SIZE; i++) {
+    for (let i = 0; i < this.state.size; i++) {
       let number = generateRandomValue(5, 500);
       if (max_height < number){
         max_height = number;
@@ -46,7 +88,7 @@ class Bars extends Component {
   }
 
   bubbleSort() {
-    const { array } = this.state;
+    const { array } = this.state
     const newArray = BubbleSort.bubbleSort(array);
 
     const animations = [];
@@ -80,7 +122,7 @@ class Bars extends Component {
             arrayBars[
               indexBar2
             ].style.backgroundColor = INCORRECT_PLACE_COMPARISION_BAR_COLOR;
-            if (i % 3 == 2) {
+            if (i % 3 === 2) {
               arrayBars[indexBar1].style.backgroundColor = DEFAULT_BAR_COLOR;
               arrayBars[indexBar2].style.backgroundColor = DEFAULT_BAR_COLOR;
             }
@@ -91,7 +133,7 @@ class Bars extends Component {
             arrayBars[
               indexBar2
             ].style.backgroundColor = CORRECT_PLACE_COMPARISION_BAR_COLOR;
-            if (i % 3 == 2) {
+            if (i % 3 === 2) {
               arrayBars[indexBar1].style.backgroundColor = DEFAULT_BAR_COLOR;
               arrayBars[indexBar2].style.backgroundColor = DEFAULT_BAR_COLOR;
             }
@@ -102,7 +144,7 @@ class Bars extends Component {
   }
 
   insertionSort() {
-    const { array } = this.state;
+    const { array } = this.state
     const animations = InsertionSort.insertionSort(array);
 
     for (let i = 0; i < animations.length; i++) {
@@ -110,7 +152,7 @@ class Bars extends Component {
       const [index_1, index_2, operation] = animations[i];
 
       setTimeout(() => {
-        if (operation == 1) {
+        if (operation === 1) {
           let bar1_prop = arrayBar[index_1].style;
           let bar2_prop = arrayBar[index_2].style;
 
@@ -121,7 +163,40 @@ class Bars extends Component {
             bar1_prop.backgroundColor = CORRECT_PLACE_COMPARISION_BAR_COLOR;
             bar2_prop.backgroundColor = CORRECT_PLACE_COMPARISION_BAR_COLOR;
           }
-        } else if (operation == 2) {
+        } else if (operation === 2) {
+          let bar1_prop = arrayBar[index_1].style;
+          let bar2_prop = arrayBar[index_2].style;
+          bar1_prop.backgroundColor = DEFAULT_BAR_COLOR;
+          bar2_prop.backgroundColor = DEFAULT_BAR_COLOR;
+        } else {
+          let bar1_prop = arrayBar[index_1].style;
+          bar1_prop.height = `${index_2}px`;
+        }
+      }, i * ANIMATION_SPEED);
+    }
+  }
+
+  selectionSort() {
+    const { array } = this.state
+    const animations = SelectionSort.selectionSort(array);
+    console.log("hello")
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBar = document.getElementsByClassName("array-bar");
+      const [index_1, index_2, operation] = animations[i];
+
+      setTimeout(() => {
+        if (operation === 1) {
+          let bar1_prop = arrayBar[index_1].style;
+          let bar2_prop = arrayBar[index_2].style;
+
+          if (bar1_prop.height < bar2_prop.height) {
+            bar1_prop.backgroundColor = INCORRECT_PLACE_COMPARISION_BAR_COLOR;
+            bar2_prop.backgroundColor = INCORRECT_PLACE_COMPARISION_BAR_COLOR;
+          } else {
+            bar1_prop.backgroundColor = CORRECT_PLACE_COMPARISION_BAR_COLOR;
+            bar2_prop.backgroundColor = CORRECT_PLACE_COMPARISION_BAR_COLOR;
+          }
+        } else if (operation === 2) {
           let bar1_prop = arrayBar[index_1].style;
           let bar2_prop = arrayBar[index_2].style;
           bar1_prop.backgroundColor = DEFAULT_BAR_COLOR;
@@ -135,19 +210,20 @@ class Bars extends Component {
   }
 
   mergeSort() {
-    const { array } = this.state;
+    const { array } = this.state
     const animations = MergeSort.getAnimationsforMergeSort(array);
     const arrayBars = document.getElementsByClassName("array-bar");
     let index = 0;
+    let size = arrayBars.length
     for (let [index_1, index_2, operation] of animations) {
       setTimeout(() => {
-        if (operation == 1) {
+        if (operation === 1) {
           console.log(index_1);
           arrayBars[
             index_1
           ].style.height = INCORRECT_PLACE_COMPARISION_BAR_COLOR;
         } else {
-          if (index_1 >= SIZE) {
+          if (index_1 >= size) {
             console.log(index_1);
           } else arrayBars[index_1].style.height = `${index_2}px`;
         }
@@ -155,75 +231,22 @@ class Bars extends Component {
       index++;
     }
   }
+
   render() {
-    const { array } = this.state;
     return (
-      <div>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Sorting-Visualiser</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Button
-                style={{ margin: "0 10px" }}
-                variant="dark"
-                onClick={() => {
-                  this.resetArray();
-                }}
-              >
-                Generate Array
-              </Button>
-              <Button
-                variant="dark"
-                onClick={() => {
-                  const arrayBars = document.getElementsByClassName(
-                    "array-bar"
-                  );
-                  for (let i = 0; i < SIZE; i++)
-                    arrayBars[i].style.backgroundColor = "blue";
-                }}
-              >
-                Color Change
-              </Button>
-              <NavDropdown title="Algorithms" id="collasible-nav-dropdown">
-                <NavDropdown.Item
-                  href="#action/3.1"
-                  onSelect={() => {
-                    this.mergeSort();
-                  }}
-                >
-                  Merge Sort
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  href="#action/3.2"
-                  onSelect={() => {
-                    this.bubbleSort();
-                  }}
-                >
-                  Bubble Sort
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  href="#action/3.3"
-                  onSelect={() => {
-                    this.insertionSort();
-                  }}
-                >
-                  Insertion Sort
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Quick Sort
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Nav>
-              <Nav.Link href="#deets">Instructions</Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
-                Remarks
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+      <>
+        <Slider resetArray={this.resetArray}/>
+        <NavBar resetArray={this.resetArray}
+                changeBarColor={this.changeBarColor}
+                mergeSort={this.mergeSort}
+                bubbleSort={this.bubbleSort}
+                insertionSort={this.insertionSort}
+                selectionSort={this.selectionSort}
+                showModal={this.showModal}/>
+        <InstructionsModal
+          show={this.state.modalActive}
+          onHide={() => this.setState({modalActive: false})}
+        />
         <div style={{ backgroundColor: "black", width: "100%" }}>
           <div
             style={{
@@ -234,7 +257,7 @@ class Bars extends Component {
             }}
             className="array-container"
           >
-            {array.map((value, idx) => (
+            {this.state.array.map((value, idx) => (
               <div
                 className="array-bar"
                 key={idx}
@@ -243,8 +266,8 @@ class Bars extends Component {
             ))}
           </div>
         </div>
-      </div>
-    );
+      </>
+    )
   }
 }
 

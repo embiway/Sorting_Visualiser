@@ -1,14 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Bars from "./SortingComponents/bars";
+import Bars from "./SortingComponents/Board";
 import "./index.css";
-import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Slider from './SortingComponents/Slider'
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<Bars />, document.getElementById("root"));
-ReactDOM.render(<Slider.Slider />, document.getElementById("body"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
