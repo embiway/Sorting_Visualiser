@@ -55,7 +55,6 @@ class Bars extends Component {
 
   // used to toggle between the bar color pink and blue.
   changeBarColor() {
-    console.log("Function")
     if (this.state.barColor === DEFAULT_BAR_COLOR) {
       this.setState({barColor : ALTER_BAR_COLOR})
       const arrayBars = document.getElementsByClassName(
@@ -263,31 +262,31 @@ class Bars extends Component {
           >
             {this.state.array.map((value, idx) => (
               <div
-                className="array-bar"
+                className={this.state.barColor === DEFAULT_BAR_COLOR ? "array-bar-pink" : "array-bar-blue"}
                 key={idx}
-                style={{ height: `${value}px`, width: `${BAR_WIDTH}px` }}
+                style={{ height: `${value}px`, width: `${BAR_WIDTH}px`}}
               ></div>
             ))}
           </div>
           <Button variant="outline-warning" className="button-centre" onClick={ () => {
-          const currentAlgo = this.state.algoSelected;
-          if (currentAlgo == null) {
-            alert("Please select an algorithm to visualize");
-            return;
-          }
+            const currentAlgo = this.state.algoSelected;
+            if (currentAlgo == null) {
+              alert("Please select an algorithm to visualize");
+              return;
+            }
 
-          switch(currentAlgo) {
-            case "InsertionSort": this.insertionSort();
-                      break;
-            case "MergeSort" : this.mergeSort();
-                      break;
-            case "SelectionSort" : this.selectionSort();
-                      break;
-            case "BubbleSort" : this.bubbleSort();
-                      break;
-            default : alert("Algo not found");
-          }
-        } }>Visualize</Button>{' '} 
+            switch(currentAlgo) {
+              case "InsertionSort": this.insertionSort();
+                        break;
+              case "MergeSort" : this.mergeSort();
+                        break;
+              case "SelectionSort" : this.selectionSort();
+                        break;
+              case "BubbleSort" : this.bubbleSort();
+                        break;
+              default : alert("Algo not found");
+            }
+          } }>Visualize</Button>{' '} 
         </div>
         
       </>

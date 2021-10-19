@@ -7,12 +7,20 @@
   margin: 0 auto;
 }
 
-.array-bar {
+.array-bar-pink {
   width: 2px;
   background-color: pink;
   display: inline-block;
   margin: 0 1px;
 }
+
+.array-bar-blue {
+  width: 2px;
+  background-color: blue;
+  display: inline-block;
+  margin: 0 1px;
+}
+
 #root {
   background: black;
   margin-bottom: 5%;
