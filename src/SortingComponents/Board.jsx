@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap"
 import BubbleSort from "../Algorithms/BubbleSort.js";
 import InsertionSort from "../Algorithms/InsertionSort.js";
 import MergeSort from "../Algorithms/MergeSort.js";
@@ -24,7 +25,8 @@ class Bars extends Component {
       array: [],
       barColor: DEFAULT_BAR_COLOR,
       size: 0,
-      modalActive: false
+      modalActive: false,
+      algoSelected: null,
     };
 
     this.changeBarColor = this.changeBarColor.bind(this)
@@ -34,6 +36,7 @@ class Bars extends Component {
     this.bubbleSort = this.bubbleSort.bind(this)
     this.selectionSort = this.selectionSort.bind(this)
     this.showModal = this.showModal.bind(this)
+    this.selectAlgo = this.selectAlgo.bind(this)
   }
 
 
@@ -43,7 +46,11 @@ class Bars extends Component {
 
   // method to set showModal to true so that it can be shown when We click on Instructions on the NavBar.
   showModal() {
-    this.setState({modalActive: true})
+    this.setState({modalActive: true});
+  }
+
+  selectAlgo(algorithm) {
+    this.setState({algoSelected : algorithm});
   }
 
   // used to toggle between the bar color pink and blue.
@@ -238,16 +245,13 @@ class Bars extends Component {
         <Slider resetArray={this.resetArray}/>
         <NavBar resetArray={this.resetArray}
                 changeBarColor={this.changeBarColor}
-                mergeSort={this.mergeSort}
-                bubbleSort={this.bubbleSort}
-                insertionSort={this.insertionSort}
-                selectionSort={this.selectionSort}
+                selectAlgo={this.selectAlgo}
                 showModal={this.showModal}/>
         <InstructionsModal
           show={this.state.modalActive}
           onHide={() => this.setState({modalActive: false})}
         />
-        <div style={{ backgroundColor: "black", width: "100%" }}>
+        <div style={{ backgroundColor: "black", width: "100%" , position: "relative" }}>
           <div
             style={{
               marginTop: "70px",
@@ -265,7 +269,27 @@ class Bars extends Component {
               ></div>
             ))}
           </div>
+          <Button variant="outline-warning" className="button-centre" onClick={ () => {
+          const currentAlgo = this.state.algoSelected;
+          if (currentAlgo == null) {
+            alert("Please select an algorithm to visualize");
+            return;
+          }
+
+          switch(currentAlgo) {
+            case "InsertionSort": this.insertionSort();
+                      break;
+            case "MergeSort" : this.mergeSort();
+                      break;
+            case "SelectionSort" : this.selectionSort();
+                      break;
+            case "BubbleSort" : this.bubbleSort();
+                      break;
+            default : alert("Algo not found");
+          }
+        } }>Visualize</Button>{' '} 
         </div>
+        
       </>
     )
   }
