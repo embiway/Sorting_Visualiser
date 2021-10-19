@@ -17,3 +17,9 @@
   background: black;
   margin-bottom: 5%;
 }
+
+.button-centre {
+  margin: 10px 10px 10px 10px;
+  position: relative;
+  left: 50%;
+}

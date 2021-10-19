@@ -31,7 +31,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#merge_sort"
                         onSelect={() => {
-                          this.props.mergeSort();
+                          this.props.selectAlgo("MergeSort");
                         }}
                       >
                         Merge Sort
@@ -39,7 +39,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#bubble_sort"
                         onSelect={() => {
-                          this.props.bubbleSort();
+                          this.props.selectAlgo("BubbleSort");
                         }}
                       >
                         Bubble Sort
@@ -47,7 +47,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#insertion_sort"
                         onSelect={() => {
-                          this.props.insertionSort();
+                          this.props.selectAlgo("InsertionSort");
                         }}
                       >
                         Insertion Sort
@@ -55,7 +55,7 @@ class NavBar extends Component {
                       <NavDropdown.Item 
                         href="#selection_sort" 
                         onSelect={() => {
-                          this.props.selectionSort();
+                          this.props.selectAlgo("SelectionSort");
                         }}>
                         Selection Sort
                       </NavDropdown.Item>
