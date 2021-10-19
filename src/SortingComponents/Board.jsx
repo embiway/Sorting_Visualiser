@@ -12,10 +12,12 @@ import InstructionsModal from './InstructionsModal'
 const ANIMATION_SPEED = 2;
 const DEFAULT_BAR_COLOR = "pink";
 const ALTER_BAR_COLOR = "blue";
+const DEFAULT_BAR_CLASS = "array-bar-pink"
+const ALTER_BAR_CLASS = "array-bar-blue"
 const CORRECT_PLACE_COMPARISION_BAR_COLOR = "green";
 const INCORRECT_PLACE_COMPARISION_BAR_COLOR = "red";
 let WIDTH = 980;
-let MAX_HEIGHT = 500;
+let MAX_HEIGHT = 700;
 let BAR_WIDTH = 7;
 
 class Bars extends Component {
@@ -27,6 +29,7 @@ class Bars extends Component {
       size: 0,
       modalActive: false,
       algoSelected: null,
+      barClass: "array-bar-pink"
     };
 
     this.changeBarColor = this.changeBarColor.bind(this)
@@ -56,20 +59,20 @@ class Bars extends Component {
   // used to toggle between the bar color pink and blue.
   changeBarColor() {
     if (this.state.barColor === DEFAULT_BAR_COLOR) {
-      this.setState({barColor : ALTER_BAR_COLOR})
       const arrayBars = document.getElementsByClassName(
-        "array-bar"
+        `${this.state.barClass}`
       );
       for (let i = 0; i < arrayBars.length; i++)
         arrayBars[i].style.backgroundColor = ALTER_BAR_COLOR;
+      this.setState({barColor : ALTER_BAR_COLOR , barClass : ALTER_BAR_CLASS})
     }
     else {
-      this.setState({barColor : DEFAULT_BAR_COLOR})
       const arrayBars = document.getElementsByClassName(
-        "array-bar"
+        `${this.state.barClass}`
       );
       for (let i = 0; i < arrayBars.length; i++)
         arrayBars[i].style.backgroundColor = DEFAULT_BAR_COLOR;
+      this.setState({barColor : DEFAULT_BAR_COLOR , barClass : DEFAULT_BAR_CLASS})
     }
   }
 
@@ -89,7 +92,6 @@ class Bars extends Component {
     }
     MAX_HEIGHT = max_height;
 
-    // for (let i = 0; i < 500; i++) console.log(bars[i]);
     this.setState({ array: bars });
   }
 
@@ -106,7 +108,7 @@ class Bars extends Component {
     }
 
     for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName("array-bar");
+      const arrayBars = document.getElementsByClassName(`${this.state.barClass}`);
       const [indexBar1, indexBar2] = animations[i];
       if (i % 3 === 1) {
         setTimeout(() => {
@@ -154,7 +156,7 @@ class Bars extends Component {
     const animations = InsertionSort.insertionSort(array);
 
     for (let i = 0; i < animations.length; i++) {
-      const arrayBar = document.getElementsByClassName("array-bar");
+      const arrayBar = document.getElementsByClassName(`${this.state.barClass}`);
       const [index_1, index_2, operation] = animations[i];
 
       setTimeout(() => {
@@ -172,8 +174,8 @@ class Bars extends Component {
         } else if (operation === 2) {
           let bar1_prop = arrayBar[index_1].style;
           let bar2_prop = arrayBar[index_2].style;
-          bar1_prop.backgroundColor = DEFAULT_BAR_COLOR;
-          bar2_prop.backgroundColor = DEFAULT_BAR_COLOR;
+          bar1_prop.backgroundColor = `${this.state.barColor}`;
+          bar2_prop.backgroundColor = `${this.state.barColor}`;
         } else {
           let bar1_prop = arrayBar[index_1].style;
           bar1_prop.height = `${index_2}px`;
@@ -187,7 +189,7 @@ class Bars extends Component {
     const animations = SelectionSort.selectionSort(array);
     console.log("hello")
     for (let i = 0; i < animations.length; i++) {
-      const arrayBar = document.getElementsByClassName("array-bar");
+      const arrayBar = document.getElementsByClassName(`${this.state.barClass}`);
       const [index_1, index_2, operation] = animations[i];
 
       setTimeout(() => {
@@ -205,8 +207,8 @@ class Bars extends Component {
         } else if (operation === 2) {
           let bar1_prop = arrayBar[index_1].style;
           let bar2_prop = arrayBar[index_2].style;
-          bar1_prop.backgroundColor = DEFAULT_BAR_COLOR;
-          bar2_prop.backgroundColor = DEFAULT_BAR_COLOR;
+          bar1_prop.backgroundColor = `${this.state.barColor}`;
+          bar2_prop.backgroundColor = `${this.state.barColor}`;
         } else {
           let bar1_prop = arrayBar[index_1].style;
           bar1_prop.height = `${index_2}px`;
@@ -218,7 +220,7 @@ class Bars extends Component {
   mergeSort() {
     const { array } = this.state
     const animations = MergeSort.getAnimationsforMergeSort(array);
-    const arrayBars = document.getElementsByClassName("array-bar");
+    const arrayBars = document.getElementsByClassName(`${this.state.barClass}`);
     let index = 0;
     let size = arrayBars.length
     for (let [index_1, index_2, operation] of animations) {
@@ -262,7 +264,7 @@ class Bars extends Component {
           >
             {this.state.array.map((value, idx) => (
               <div
-                className={this.state.barColor === DEFAULT_BAR_COLOR ? "array-bar-pink" : "array-bar-blue"}
+                className={this.state.barClass}
                 key={idx}
                 style={{ height: `${value}px`, width: `${BAR_WIDTH}px`}}
               ></div>
