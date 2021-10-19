@@ -10,7 +10,7 @@ class NavBar extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
-                    <Button
+                    {this.props.isGenerateArrayEnabled ? <Button
                       style={{ margin: "0 10px" }}
                       variant="dark"
                       onClick={() => {
@@ -18,7 +18,16 @@ class NavBar extends Component {
                       }}
                     >
                       Generate Array
-                    </Button>
+                    </Button> : <Button
+                      style={{ margin: "0 10px" }}
+                      variant="dark"
+                      disabled
+                      onClick={() => {
+                        this.props.resetArray(-1);
+                      }}
+                    >
+                      Generate Array
+                    </Button>}
                     <Button
                       variant="dark"
                       onClick={() => {
@@ -31,6 +40,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#merge_sort"
                         onSelect={() => {
+                          this.props.deactivateSlider();
                           this.props.selectAlgo("MergeSort");
                         }}
                       >
@@ -39,6 +49,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#bubble_sort"
                         onSelect={() => {
+                          this.props.deactivateSlider();
                           this.props.selectAlgo("BubbleSort");
                         }}
                       >
@@ -47,6 +58,7 @@ class NavBar extends Component {
                       <NavDropdown.Item
                         href="#insertion_sort"
                         onSelect={() => {
+                          this.props.deactivateSlider();
                           this.props.selectAlgo("InsertionSort");
                         }}
                       >
@@ -55,6 +67,7 @@ class NavBar extends Component {
                       <NavDropdown.Item 
                         href="#selection_sort" 
                         onSelect={() => {
+                          this.props.deactivateSlider();
                           this.props.selectAlgo("SelectionSort");
                         }}>
                         Selection Sort

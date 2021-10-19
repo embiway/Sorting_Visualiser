@@ -29,7 +29,9 @@ class Bars extends Component {
       size: 0,
       modalActive: false,
       algoSelected: null,
-      barClass: "array-bar-pink"
+      barClass: DEFAULT_BAR_CLASS,
+      isSliderActive: true,
+      isGenerateArrayEnabled: true
     };
 
     this.changeBarColor = this.changeBarColor.bind(this)
@@ -40,6 +42,7 @@ class Bars extends Component {
     this.selectionSort = this.selectionSort.bind(this)
     this.showModal = this.showModal.bind(this)
     this.selectAlgo = this.selectAlgo.bind(this)
+    this.deactivateSlider = this.deactivateSlider.bind(this)
   }
 
 
@@ -54,6 +57,10 @@ class Bars extends Component {
 
   selectAlgo(algorithm) {
     this.setState({algoSelected : algorithm});
+  }
+
+  deactivateSlider() {
+    this.setState({isSliderActive : false , isGenerateArrayEnabled : false});
   }
 
   // used to toggle between the bar color pink and blue.
@@ -149,6 +156,10 @@ class Bars extends Component {
         }, i * ANIMATION_SPEED);
       }
     }
+
+    setTimeout(() => {
+      this.setState({isSliderActive : true, algoSelected: null , isGenerateArrayEnabled : true});
+    } , animations.length * ANIMATION_SPEED);
   }
 
   insertionSort() {
@@ -182,12 +193,14 @@ class Bars extends Component {
         }
       }, i * ANIMATION_SPEED);
     }
+    setTimeout(() => {
+      this.setState({isSliderActive : true, algoSelected: null , isGenerateArrayEnabled : true});
+    } , animations.length * ANIMATION_SPEED);
   }
 
   selectionSort() {
     const { array } = this.state
     const animations = SelectionSort.selectionSort(array);
-    console.log("hello")
     for (let i = 0; i < animations.length; i++) {
       const arrayBar = document.getElementsByClassName(`${this.state.barClass}`);
       const [index_1, index_2, operation] = animations[i];
@@ -215,6 +228,9 @@ class Bars extends Component {
         }
       }, i * ANIMATION_SPEED);
     }
+    setTimeout(() => {
+      this.setState({isSliderActive : true, algoSelected: null , isGenerateArrayEnabled : true});
+    } , animations.length * ANIMATION_SPEED);
   }
 
   mergeSort() {
@@ -235,19 +251,26 @@ class Bars extends Component {
             console.log(index_1);
           } else arrayBars[index_1].style.height = `${index_2}px`;
         }
-      }, index * 5);
+      }, index * ANIMATION_SPEED);
       index++;
     }
+
+    setTimeout(() => {
+      this.setState({isSliderActive : true, algoSelected: null , isGenerateArrayEnabled : true});
+    } , animations.length * ANIMATION_SPEED);
   }
 
   render() {
     return (
       <>
-        <Slider resetArray={this.resetArray}/>
+        <Slider resetArray={this.resetArray}
+                isSliderActive={this.state.isSliderActive}/>
         <NavBar resetArray={this.resetArray}
                 changeBarColor={this.changeBarColor}
                 selectAlgo={this.selectAlgo}
-                showModal={this.showModal}/>
+                showModal={this.showModal}
+                deactivateSlider={this.deactivateSlider}
+                isGenerateArrayEnabled={this.state.isGenerateArrayEnabled}/>
         <InstructionsModal
           show={this.state.modalActive}
           onHide={() => this.setState({modalActive: false})}
